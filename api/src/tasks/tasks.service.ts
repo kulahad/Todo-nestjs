@@ -25,7 +25,7 @@ export class TasksService {
     return this.taskModel.findByIdAndUpdate(updateTask);
   }
 
-  async deleteTask(id: number): Promise<Task> {
+  async deleteTask(id: string): Promise<Task> {
     return this.taskModel.findByIdAndDelete(id);
   }
 }

@@ -1,5 +1,5 @@
 export class UpdateTaskDto {
-  id: number;
+  id: string;
   title: string;
   description: string;
   isComplete: boolean;
