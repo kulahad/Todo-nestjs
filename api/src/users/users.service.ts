@@ -4,11 +4,11 @@ import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/users.schema';
 import { CreateUserDto, UpdateUserDto } from './dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
-  private rounds = 10;
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, private configService: ConfigService) {}
 
   async findUser(id: string) {
     return this.userModel.findById(id);
@@ -20,18 +20,19 @@ export class UsersService {
 
   async registerUser(user: CreateUserDto) {
     let isUsernameTaken = await this.findUserByUsername(user.userName);
-    let isEmailTaken = await this.userModel.findOne({email: user.email})
+    let isEmailTaken = await this.userModel.findOne({email: user.email});
+    const ROUND = parseInt(this.configService.get<string>('HASH_ROUND'));
 
     const userDetails: User = {
       userName: user.userName,
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
-      passwordHash: bcrypt.hashSync(user.password, this.rounds),
+      passwordHash: bcrypt.hashSync(user.password, ROUND),
       email: user.email,
     };
     if (isUsernameTaken !== null || isEmailTaken !== null) {
-      return `Sorry there is already username/email already registered`;
+      return `Sorry this username/email is already registered`;
     }
     return this.userModel.create(userDetails);
   }
