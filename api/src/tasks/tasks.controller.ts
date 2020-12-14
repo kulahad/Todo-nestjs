@@ -7,7 +7,6 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { from } from 'rxjs';
 import { CreateTaskDto, UpdateTaskDto } from './dto';
 import { TasksService } from './tasks.service';
 
