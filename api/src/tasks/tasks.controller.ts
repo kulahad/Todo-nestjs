@@ -21,9 +21,8 @@ export class TasksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    //Use a service here
-    return `Get task with a id of ${id} all Tasks from Db`;
+  findOne(@Param('id') id: string) {
+    return this.tasksService.findOne(id);
   }
 
   @Post()
@@ -32,12 +31,12 @@ export class TasksController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() task: UpdateTaskDto) {
-    return `Created a object - ${task.title}`;
+  update(@Body() task: UpdateTaskDto) {
+    return this.tasksService.updateTask(task);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return `This action removes a #${id} Task`;
+    return this.tasksService.deleteTask(id);
   }
 }
