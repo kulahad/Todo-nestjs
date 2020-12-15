@@ -6,6 +6,9 @@ import { TaskModule } from './tasks/tasks.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { JwtAuthGuard } from './auth/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
+
 
 @Module({
   imports: [
@@ -16,6 +19,10 @@ import { UsersModule } from './users/users.module';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },],
 })
 export class AppModule {}
