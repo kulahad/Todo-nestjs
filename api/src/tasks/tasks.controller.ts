@@ -6,19 +6,23 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateTaskDto, UpdateTaskDto } from './dto';
 import { TasksService } from './tasks.service';
+import { JwtAuthGuard } from '../auth/auth.guard';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.tasksService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tasksService.findOne(id);
