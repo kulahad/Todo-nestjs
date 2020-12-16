@@ -12,12 +12,12 @@ const Task = {
 describe('TasksService', () => {
   let service: TasksService;
   const TaskModel = {
-    save: jest.fn().mockResolvedValue(Task),
+    create: jest.fn().mockResolvedValue(Task),
     find: jest.fn().mockResolvedValue([Task]),
     findOne: jest.fn().mockResolvedValue(Task),
     findByIdAndUpdate: jest.fn().mockResolvedValue(Task),
     findById: jest.fn().mockResolvedValue(Task),
-    deleteOne: jest.fn().mockResolvedValue(true),
+    findByIdAndDelete: jest.fn().mockResolvedValue(true),
   };
 
   beforeEach(async () => {
@@ -37,15 +37,41 @@ describe('TasksService', () => {
     it('should be defined', () => {
       expect(service).toBeDefined();
     });
-    it('should return one event', () => {
-        expect(service.findOne('53d53d2s')).resolves.toEqual(Task).catch(err => {
+    it('should a new task', () => {
+      expect(service.create(Task))
+        .resolves.toEqual(Task)
+        .catch((err) => {
           console.log(err);
         });
-      });
-      it('should find and update one model', () => {
-        expect(service.updateTask(Task)).resolves.toEqual(Task).catch( err => {
+    });
+    it('should return list of tasks', () => {
+      expect(service.findAll())
+        .resolves.toEqual([Task])
+        .catch((err) => {
           console.log(err);
         });
-      });
+    });
+    it('should return one task with id', () => {
+      expect(service.findOne('some-id'))
+        .resolves.toEqual(Task)
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+    it('should find and update specified task', () => {
+      expect(service.updateTask(Task))
+        .resolves.toEqual(Task)
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+    it('should find and delete specified task', () => {
+      expect(service.deleteTask('some-id'))
+        .resolves.toEqual(true)
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+
   });
 });
